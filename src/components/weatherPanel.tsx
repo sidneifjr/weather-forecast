@@ -1,12 +1,9 @@
 import { ArrowDown, ArrowUp, X } from "phosphor-react";
 import { useState } from "react";
 
-interface WeatherPanelProps {
-
-}
-
 let orange = "#FF9E0A";
 
+// Put the loading and error components in here!
 function WeatherPanel(props: any){
   let [isVisible, setIsVisible] = useState<boolean>(true);
 
@@ -18,21 +15,21 @@ function WeatherPanel(props: any){
         <X size={25} />
       </button>
 
-      <p className="text-xl my-4">{props.temperature}&#8451;, {props.weather}</p>
+      <p className="text-2xl my-4">{props.temperature}&#8451;, {props.weather}</p>
 
-      <div className="flex">
-        <div className="flex mr-5">
-          <ArrowUp size={32} />
+      <div className="flex flex-wrap">
+        <div className="flex items-center mr-5">
+          <ArrowUp size={32} color={orange} weight='bold' />
           {props.minTemperature}&#8451;
         </div>
 
-        <div className="flex">
-          <ArrowDown size={32} color={orange} />
+        <div className="flex items-center">
+          <ArrowDown size={32} color={orange} weight='bold' />
           {props.maxTemperature}&#8451;
         </div>
 
-        <p>Sensation</p>
-        <p>Wind</p>
+        <p className="w-full block">Sensation</p>
+        <p className="w-full block">Wind</p>
       </div>
     </div>
   )

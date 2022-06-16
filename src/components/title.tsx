@@ -5,7 +5,7 @@ interface TitleProps {
 
 function Title(props: TitleProps){
   return (
-    <h1 className={props.className}>{props.text ?? 'title'}</h1>
+    <h2 className={props.className}>{props.text ?? 'title'}</h2>
   )
 }
 

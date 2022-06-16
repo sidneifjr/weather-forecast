@@ -2,7 +2,7 @@
 
 A small project, intended to practice new technologies and techniques.
 
-Made using:
+Built with:
 
 - TailwindCSS;
 
@@ -16,4 +16,4 @@ Made using:
 
 - OpenWeatherAPI (https://openweathermap.org/)
 
-Docs for the API are available in https://openweathermap.org/current#min.
+Docs for the API are available at https://openweathermap.org/current#min.
