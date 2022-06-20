@@ -2,7 +2,6 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import Title from './components/title';
-import Table from './components/table';
 import InputField from './components/inputField';
 import Error from './components/error';
 import Loading from './components/loading';
@@ -12,7 +11,7 @@ import './App.css';
 
 let API_key = "9badc7c6ad1223425a6fc2945eac9297";
 
-function App() {
+const App = () => {
   // Weather parameters
   let [temperature, setTemperature] = useState<number | null>(0);
   let [minTemperature, setMinTemperature] = useState<number | null>(0);
@@ -37,6 +36,7 @@ function App() {
 
     try {
       const response = await axios.get(url);
+
       setCity(response.data.name);
       setCountry(response.data.sys.country);
       setTemperature(convertKelvinToCelsius(response.data.main.temp));
@@ -72,7 +72,7 @@ function App() {
   
       timer = setTimeout(() => {
         getLocation(inputValue);
-      }, 1250);
+      }, 2000);
     }
   }
 
@@ -83,21 +83,14 @@ function App() {
       <form className="max-w-3xl mr-auto ml-auto" onSubmit={arg => arg.preventDefault()}>
         <InputField
           placeholder="Insira o nome da localidade (país, cidade) desejada"
-          // onChange={(e:string) => getLocation(e)}
           onKeyUp={(el:any) => typingHandler(el)}
         />
 
         <div className='max-w-md mx-auto relative'>
           {isLoading && <Loading className={error ? ' hidden' : ''} />}
-          {city ? <WeatherPanel city={city} country={country} weather={weather} temperature={temperature} minTemperature={minTemperature} maxTemperature={maxTemperature} /> : '' }
-          {error ? <Error /> : ''}
+          {city && <WeatherPanel city={city} country={country} weather={weather} temperature={temperature} minTemperature={minTemperature} maxTemperature={maxTemperature} />}
+          {error && <Error />}
         </div>
-
-        <hr className="w-full relative mb-10 mt-10" />
-
-        <Title className="text-white text-3xl font-semibold text-center mb-8" text="Capitais" />
-
-        <Table />
       </form>
     </main>
   )

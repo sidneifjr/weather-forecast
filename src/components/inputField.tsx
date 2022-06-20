@@ -1,4 +1,5 @@
 import { MagnifyingGlassPlus } from 'phosphor-react';
+import { useId } from 'react';
 
 interface InputFieldProps {
   placeholder: string;
@@ -9,12 +10,14 @@ interface InputFieldProps {
   // onSubmit: any;
 }
 
-function InputField(props: any){
+const InputField = (props: any) => {
+  const inputId = useId();
+
   return (
     <div className="input-field relative">
-      <input className="w-full p-5 text-lg" type="text" placeholder={props.placeholder} onChange={props.onChange} onKeyUp={props.onKeyUp} onKeyDown={props.onKeyUp} />
+      <input className="w-full p-5 text-lg" id={inputId} type="text" placeholder={props.placeholder} onChange={props.onChange} onKeyUp={props.onKeyUp} />
 
-      <a className="flex w-8 h-8 absolute right-5 top-5 align-center" href="#" rel="noopener noreferrer">
+      <a className="w-8 h-8 absolute right-5 top-5 flex align-center" href="#" rel="noopener noreferrer">
         <MagnifyingGlassPlus size={32} weight="bold" />
       </a>
     </div>
