@@ -1,11 +1,30 @@
-import { ArrowDown, ArrowUp, Cloud, CloudLightning, CloudRain, CloudSnow, Sun, Wind, X } from "phosphor-react";
 import { useState } from "react";
+import { ArrowDown, ArrowUp, Cloud, CloudLightning, CloudRain, CloudSnow, Sun, Wind, X } from "phosphor-react";
+// import Error from './error';
+import Loading from "./loading";
 
 let orange = "#FF9E0A";
 
-// Put the loading and error components in here!
-function WeatherPanel(props: any){
+interface WeatherPanelProps {
+  city: string,
+  country: string,
+  weather: string,
+  temperature: number,
+  minTemperature: number,
+  maxTemperature: number,
+  error: boolean,
+  loading: boolean
+}
+
+const WeatherPanel = (props: any) => {
   let [isVisible, setIsVisible] = useState<boolean>(true);
+  console.log(props.error);
+
+  // if(props.error == true){
+  //   return (
+  //     <Error />
+  //   )
+  // }
 
   // let weatherOptions = [
   //   {
@@ -65,28 +84,32 @@ function WeatherPanel(props: any){
   }
 
   return (
-    <div className={isVisible ? "bg-white relative py-4 px-5 my-10" : "hidden"}>
-      <header className="text-3xl">{props.city} ({props.country})</header>
+    <div className='max-w-md mx-auto relative'>
+      {props.loading ? <Loading /> : (
+        <div className={isVisible ? "bg-white relative py-4 px-5 my-10" : "hidden"}>
+          <header className="text-3xl">{props.city} ({props.country})</header>
 
-      <button type="button" className="absolute right-4 top-4" onClick={() => setIsVisible(!isVisible)}>
-        <X size={25} />
-      </button>
+          <button type="button" className="absolute right-4 top-4" onClick={() => setIsVisible(!isVisible)}>
+            <X size={25} />
+          </button>
 
-      <p className="text-2xl my-4 flex">{props.temperature}&#8451;, {props.weather} <span className="mx-2">{weatherIcon}</span></p>
+          <p className="text-2xl my-4 flex">{props.temperature}&#8451;, {props.weather} <span className="mx-2">{weatherIcon}</span></p>
 
-      <div className="flex flex-wrap">
-        <div className="flex items-center mr-5">
-          <ArrowUp size={32} weight='bold' />
-          {props.minTemperature}&#8451;
+          <div className="flex flex-wrap">
+            <div className="flex items-center mr-5">
+              <ArrowUp size={32} weight='bold' />
+              {props.minTemperature}&#8451;
+            </div>
+
+            <div className="flex items-center">
+              <ArrowDown size={32} weight='bold' />
+              {props.maxTemperature}&#8451;
+            </div>
+
+            <p className="w-full mt-5 flex"><Wind size={32} />Wind: {/*{props.wind.speed}*/}</p>
+          </div>
         </div>
-
-        <div className="flex items-center">
-          <ArrowDown size={32} weight='bold' />
-          {props.maxTemperature}&#8451;
-        </div>
-
-        <p className="w-full mt-5 flex"><Wind size={32} />Wind: {/*{props.wind.speed}*/}</p>
-      </div>
+      )}
     </div>
   )
 }

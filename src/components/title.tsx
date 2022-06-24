@@ -3,7 +3,7 @@ interface TitleProps {
   className?: string
 }
 
-function Title(props: TitleProps){
+const Title = (props: TitleProps) => {
   return (
     <h2 className={props.className}>{props.text ?? 'title'}</h2>
   )

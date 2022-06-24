@@ -1,6 +1,10 @@
 import { Warning } from "phosphor-react";
 
-function Error(){
+interface ErrorProps {
+  error: boolean
+}
+
+const Error = (props:any) => {
   return (
     <div className="bg-white py-8 my-8 flex items-center flex-col">
       <Warning size={64} weight="bold" color="red" />

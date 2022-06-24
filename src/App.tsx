@@ -3,9 +3,9 @@ import axios from 'axios';
 
 import Title from './components/title';
 import InputField from './components/inputField';
-import Error from './components/error';
-import Loading from './components/loading';
 import WeatherPanel from './components/weatherPanel';
+import Loading from './components/loading';
+import Error from './components/error';
 
 import './App.css';
 
@@ -21,21 +21,21 @@ const App = () => {
   let [weather, setWeather] = useState<string>('');
 
   // General settings
-  let [error, setError] = useState<boolean>(false);
+  let [isError, setIsError] = useState<boolean>(false);
   let [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const convertKelvinToCelsius = (value:number) => {
+  let convertKelvinToCelsius = (value:number) => {
     return Math.floor(value - 273.15);
   }
 
-  const getLocation = async (param:any) => {
+  let getLocation = async (param:any) => {
     let value = param;
     let url = "https://api.openweathermap.org/data/2.5/weather?q=" + value + "&appid=" + API_key;
 
     setIsLoading(true);
 
     try {
-      const response = await axios.get(url);
+      let response = await axios.get(url);
 
       setCity(response.data.name);
       setCountry(response.data.sys.country);
@@ -44,12 +44,12 @@ const App = () => {
       setMaxTemperature(convertKelvinToCelsius(response.data.main.temp_max));
       setWeather(response.data.weather[0].main);
 
-      setError(false);
+      setIsError(false);
       setIsLoading(false);
     }
     
     catch (error) {
-      // resets values, if an error is returned. So that the weather panel won't be shown with wrong values.
+      // resets values, if an error is returned. So that the weather panel won't be shown with wrong or empty values.
       setCity('');
       setCountry('');
       setTemperature(convertKelvinToCelsius(0));
@@ -57,11 +57,13 @@ const App = () => {
       setMaxTemperature(convertKelvinToCelsius(0));
       setWeather('');
 
-      setError(true);
+      setIsError(true);
+      // setIsLoading(false);
+      console.log(isError);
     }
   }
 
-  const typingHandler = (el:any) => {
+  let typingHandler = (el:any) => {
     let inputValue = el.target.value;
     let timer;
 
@@ -69,27 +71,40 @@ const App = () => {
     if(inputValue.length){
       clearTimeout(timer);
       console.log('timeout cleared');
-  
-      timer = setTimeout(() => {
-        getLocation(inputValue);
-      }, 2000);
+
+      getLocation(inputValue);
+
+      // timer = setTimeout(() => {
+      // }, 2000);
     }
   }
 
   return (
-    <main className="App mt-16 scrollbar">
-      <Title className="text-white text-4xl font-semibold text-center mb-8" text="Previsão do Tempo" />
+    <main className="App mt-28 scrollbar">
+      <Title className="text-white text-4xl font-semibold text-center mb-8" text="Weather Forecast" />
 
       <form className="max-w-3xl mr-auto ml-auto" onSubmit={arg => arg.preventDefault()}>
         <InputField
-          placeholder="Insira o nome da localidade (país, cidade) desejada"
+          placeholder="Insert the desired location"
           onKeyUp={(el:any) => typingHandler(el)}
         />
 
         <div className='max-w-md mx-auto relative'>
-          {isLoading && <Loading className={error ? ' hidden' : ''} />}
+          {isLoading && <Loading className={isError ? ' hidden' : ''} />}
           {city && <WeatherPanel city={city} country={country} weather={weather} temperature={temperature} minTemperature={minTemperature} maxTemperature={maxTemperature} />}
-          {error && <Error />}
+          {isError && <Error />}
+
+          {/* {city &&
+            <WeatherPanel
+              city={city}
+              country={country}
+              weather={weather}
+              temperature={temperature}
+              minTemperature={minTemperature}
+              maxTemperature={maxTemperature}
+              error={isError}
+              loading={isLoading} />
+            } */}
         </div>
       </form>
     </main>
